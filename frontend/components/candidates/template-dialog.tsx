@@ -97,7 +97,10 @@ export function TemplateDialog({ open, onOpenChange, onApplied }: Props) {
   }
   async function handleCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    // Capture the form element synchronously: React nulls event.currentTarget
+    // after the await below, so it cannot be touched in the success path.
+    const formEl = event.currentTarget;
+    const form = new FormData(formEl);
     const name = String(form.get("name") ?? "").trim();
     const body = String(form.get("body") ?? "").trim();
     if (name.length < 2) {
@@ -118,7 +121,7 @@ export function TemplateDialog({ open, onOpenChange, onApplied }: Props) {
     try {
       const created = await createTemplate({ name, body });
       setTemplates((prev) => [created, ...prev]);
-      event.currentTarget.reset();
+      formEl.reset();
       setFormValid(false);
       setCreateName("");
       resolveToast(toastId, true, "Template saved", `"${created.name}" is ready to use.`);
