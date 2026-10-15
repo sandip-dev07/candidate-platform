@@ -63,7 +63,13 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     body = null;
   }
   if (!res.ok) {
-    throw new ApiError(res.status, extractDetail(body, `Request failed (${res.status}).`));
+    const fallback =
+      res.status === 0
+        ? "Could not reach the communication service. Check your connection and try again."
+        : res.status >= 500
+          ? `Service temporarily unavailable (HTTP ${res.status}). It may be redeploying — wait a moment and try again.`
+          : `Request failed (${res.status}).`;
+    throw new ApiError(res.status, extractDetail(body, fallback));
   }
   return body as T;
 }

@@ -104,6 +104,10 @@ export function TemplateDialog({ open, onOpenChange, onApplied }: Props) {
       setFormError("Template body cannot be empty.");
       return;
     }
+    if (templates.some((t) => t.name.toLowerCase() === name.toLowerCase())) {
+      setFormError(`A template named "${name}" already exists. Edit it from the list above instead.`);
+      return;
+    }
     setSaving(true);
     setFormError("");
     const toastId = notifyLoading("Saving template…", name);
