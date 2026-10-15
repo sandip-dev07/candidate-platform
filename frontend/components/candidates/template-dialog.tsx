@@ -35,6 +35,10 @@ export function TemplateDialog({ open, onOpenChange, onApplied }: Props) {
   const [editBody, setEditBody] = useState("");
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [createName, setCreateName] = useState("");
+  const duplicateName =
+    createName.trim().length >= 2 &&
+    templates.some((t) => t.name.toLowerCase() === createName.trim().toLowerCase());
 
   const fetchTemplates = useCallback(async () => {
     setLoading(true);
@@ -116,6 +120,7 @@ export function TemplateDialog({ open, onOpenChange, onApplied }: Props) {
       setTemplates((prev) => [created, ...prev]);
       event.currentTarget.reset();
       setFormValid(false);
+      setCreateName("");
       resolveToast(toastId, true, "Template saved", `"${created.name}" is ready to use.`);
     } catch (e) {
       const message = e instanceof ApiError ? e.message : "Could not save template.";
@@ -290,6 +295,7 @@ export function TemplateDialog({ open, onOpenChange, onApplied }: Props) {
             const data = new FormData(event.currentTarget);
             const name = String(data.get("name") ?? "").trim();
             const body = String(data.get("body") ?? "").trim();
+            setCreateName(name);
             setFormValid(
               event.currentTarget.checkValidity() && name.length >= 2 && body.length > 0,
             );
@@ -310,6 +316,12 @@ export function TemplateDialog({ open, onOpenChange, onApplied }: Props) {
                 Template name <span aria-hidden="true">*</span>
               </label>
             </div>
+            {duplicateName && (
+              <p role="alert" className={styles.error} style={{ margin: 0 }}>
+                A template named &ldquo;{createName.trim()}&rdquo; already exists — edit it
+                from the list above instead.
+              </p>
+            )}
             <div className={styles.messageField}>
               <label htmlFor="template-body">
                 Template body <span aria-hidden="true">*</span>
@@ -343,7 +355,7 @@ export function TemplateDialog({ open, onOpenChange, onApplied }: Props) {
             >
               Close
             </Button>
-            <Button type="submit" disabled={!formValid || saving}>
+            <Button type="submit" disabled={!formValid || saving || duplicateName}>
               {saving ? (
                 <>
                   <Spinner /> Saving…
