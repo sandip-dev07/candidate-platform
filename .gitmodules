@@ -1,0 +1,3 @@
+[submodule "backend"]
+	path = backend
+	url = https://github.com/sandip-dev07/candidate-platform-backend.git
