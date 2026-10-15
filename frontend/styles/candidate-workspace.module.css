@@ -1,0 +1,842 @@
+.workspace {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-body);
+}
+.toolbar {
+  min-height: var(--toolbar-height);
+  padding: var(--space-2) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  background: var(--surface);
+}
+.toolbar h1 {
+  margin: 0;
+  font-size: var(--text-title);
+  line-height: 29px;
+  font-weight: 700;
+  color: var(--heading);
+  white-space: nowrap;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.actions > button {
+  height: var(--control-height);
+  padding: 6px 16px;
+  gap: 8px;
+  border-radius: var(--radius);
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+.actions > button img {
+  flex-shrink: 0;
+  margin-left: -4px;
+}
+.addButton {
+  color: var(--primary);
+  border-color: var(--primary-outlined-border);
+  background: var(--surface);
+}
+.actions .actionButton:disabled {
+  opacity: 1;
+  color: var(--disabled-foreground);
+  background: var(--disabled-background);
+}
+.search {
+  width: 240px;
+  height: 40px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search > img {
+  position: absolute;
+  left: 12px;
+  pointer-events: none;
+}
+.search input {
+  height: 40px;
+  padding-left: 36px;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.panel {
+  margin: 8px 8px 8px 0;
+  padding: 8px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+}
+.tableArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.table {
+  table-layout: fixed;
+  min-width: 950px;
+  line-height: 26px;
+}
+.checkboxColumn {
+  width: 48px;
+}
+.nameColumn {
+  width: 240px;
+}
+.table th {
+  height: var(--table-header-height);
+  padding: 0 12px;
+  font-weight: 700;
+  background: var(--muted);
+  border-bottom: 1px solid var(--border-strong);
+}
+.table td {
+  height: var(--table-row-height);
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border);
+}
+.table th:first-child,
+.table td:first-child {
+  padding: 0 14px;
+}
+.table td:nth-child(2) {
+  padding-left: 8px;
+}
+.columnHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.columnHeader button {
+  width: 24px;
+  height: 24px;
+}
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 0;
+  background: url("/figma/imgCheckbox.svg") center no-repeat;
+}
+.checkbox[data-checked],
+.checkbox[data-indeterminate] {
+  background: var(--primary);
+  border-radius: 2px;
+}
+.checkbox[data-indeterminate]::before {
+  content: "";
+  width: 10px;
+  height: 2px;
+  background: var(--surface);
+}
+.checkbox[data-indeterminate] > span {
+  display: none;
+}
+.name {
+  color: var(--link);
+  cursor: pointer;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  text-align: left;
+}
+.name:hover {
+  text-decoration: underline;
+}
+.name:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.unavailable {
+  color: var(--text-unavailable);
+}
+.status {
+  height: 24px;
+  padding: 4px 6px;
+  gap: 0;
+  border: 0;
+  font-size: var(--text-caption);
+  font-weight: 400;
+  letter-spacing: 0.16px;
+  line-height: 18px;
+}
+.status > span {
+  padding: 0 6px;
+}
+.status[data-status="read"],
+.status[data-status="Delivered"] {
+  color: var(--status-success-fg);
+  background: var(--status-success-bg);
+}
+.status[data-status="Failed"] {
+  color: var(--status-failed-fg);
+  background: var(--status-failed-bg);
+}
+.status[data-status="Sent"] {
+  color: var(--status-sent-fg);
+  background: var(--status-sent-bg);
+}
+.idCell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gridFiller {
+  flex: 1;
+  min-height: 84px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 41px,
+    var(--border) 41px,
+    var(--border) 42px
+  );
+  margin-bottom: 30px;
+}
+.footer {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 16px;
+  line-height: 19px;
+}
+.pageSize {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pageSize > span {
+  display: flex;
+  position: relative;
+}
+.pageSize select {
+  appearance: none;
+  padding-right: 24px;
+  min-width: 41px;
+  cursor: pointer;
+}
+.pageSize img {
+  position: absolute;
+  right: 0;
+  pointer-events: none;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.pagination button {
+  height: 24px;
+  width: 24px;
+  border: 0;
+  padding: 0;
+}
+.pagination img {
+  flex-shrink: 0;
+}
+.pagination button:disabled {
+  opacity: 1;
+}
+.pagination button:not(:disabled) img {
+  filter: brightness(0.4);
+}
+.lastPage {
+  transform: rotate(180deg);
+}
+.pageEdge {
+  width: 12.41px;
+  height: auto;
+}
+.feedback {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  flex-wrap: wrap;
+  color: var(--muted-foreground);
+}
+.feedback > span {
+  margin-right: auto;
+}
+.activeFilter {
+  background: var(--status-sent-bg);
+}
+.table .empty {
+  height: 150px;
+  text-align: center;
+}
+.empty p {
+  color: var(--muted-foreground);
+}
+.dialog {
+  max-width: 480px;
+  padding: 24px;
+  border-radius: 8px;
+}
+.form {
+  display: grid;
+  gap: 16px;
+}
+.form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 700;
+}
+.form input,
+.form textarea {
+  font-weight: 400;
+}
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+.dialogActions button {
+  min-height: 36px;
+}
+.helper,
+.recipientList {
+  color: var(--muted-foreground);
+  font-size: var(--text-caption);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.error {
+  color: var(--status-failed-fg);
+}
+.details {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 12px;
+}
+.details dt {
+  color: var(--muted-foreground);
+}
+.details dd {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1200px) {
+  .toolbar {
+    flex-wrap: wrap;
+    padding: 16px 24px;
+    gap: 16px;
+  }
+  .actions {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 600px) {
+  .toolbar {
+    padding: 16px;
+  }
+  .toolbar h1 {
+    font-size: 22px;
+    white-space: normal;
+  }
+  .actions {
+    width: 100%;
+  }
+  .actions > button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .search {
+    width: 100%;
+  }
+  .footer {
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    padding: 12px 8px;
+  }
+  .panel {
+    margin-right: 0;
+  }
+  .dialog {
+    max-width: calc(100% - 32px);
+  }
+}
+
+/* Add Candidate: screenshot-matched layout, scoped to this dialog only. */
+.addCandidateDialog {
+  width: 600px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow:
+    0 11px 15px -7px rgb(0 0 0 / 20%),
+    0 24px 38px 3px rgb(0 0 0 / 14%),
+    0 9px 46px 8px rgb(0 0 0 / 12%);
+}
+.addCandidateDialog > [data-slot="dialog-header"] {
+  padding: 40px 80px 46px 40px;
+  gap: 0;
+}
+.addCandidateDialog [data-slot="dialog-title"] {
+  color: var(--heading);
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+}
+.addCandidateDialog > [data-slot="dialog-close"] {
+  top: 40px;
+  right: 40px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 2px;
+  color: var(--muted-foreground);
+}
+.addCandidateDialog > [data-slot="dialog-close"] svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.5;
+}
+.addCandidateForm {
+  display: flex;
+  flex-direction: column;
+}
+.addCandidateFields {
+  display: grid;
+  gap: 32px;
+  padding: 0 40px 60px;
+}
+.outlinedField {
+  position: relative;
+  min-width: 0;
+}
+.outlinedField input {
+  height: 56px;
+  padding: 16px 12px;
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
+  background: var(--surface);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--foreground);
+  box-shadow: none;
+}
+.outlinedField label {
+  position: absolute;
+  left: 8px;
+  top: 28px;
+  transform: translateY(-50%);
+  padding: 0 4px;
+  color: #616161;
+  background: var(--surface);
+  font-size: 16px;
+  line-height: 20px;
+  cursor: text;
+  transition:
+    top 150ms ease,
+    font-size 150ms ease,
+    color 150ms ease;
+}
+.outlinedField label span {
+  color: #f44336;
+}
+.outlinedField input:focus + label,
+.outlinedField input:not(:placeholder-shown) + label {
+  top: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
+.outlinedField input:focus {
+  border-color: var(--primary);
+  outline: 1px solid var(--primary);
+}
+.outlinedField input:focus + label {
+  color: var(--primary);
+}
+.addCandidateActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 28px 40px;
+  border-top: 1px solid var(--border);
+}
+.addCandidateActions button {
+  height: 36px;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+.addCandidateActions button:first-child {
+  color: var(--primary);
+  border-color: var(--primary-outlined-border);
+  background: var(--surface);
+}
+.addCandidateActions button:disabled {
+  opacity: 1;
+  color: var(--disabled-foreground);
+  background: var(--disabled-background);
+}
+@media (max-width: 600px) {
+  .addCandidateDialog > [data-slot="dialog-header"] {
+    padding: 28px 64px 36px 24px;
+  }
+  .addCandidateDialog > [data-slot="dialog-close"] {
+    top: 28px;
+    right: 24px;
+  }
+  .addCandidateFields {
+    padding: 0 24px 40px;
+    gap: 28px;
+  }
+  .addCandidateActions {
+    padding: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .outlinedField label {
+    transition: none;
+  }
+}
+
+/* Delete confirmation uses the same modal shell and footer as Add Candidate. */
+.deleteCandidateDialog {
+  isolation: isolate;
+}
+.deleteCandidateBody {
+  min-height: 154px;
+  padding: 0 40px 84px;
+}
+.deleteCandidateQuestion {
+  margin: 0 0 8px;
+  color: var(--foreground);
+  font-size: 16px;
+  line-height: 24px;
+}
+.deleteCandidateWarning {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.3px;
+  overflow-wrap: anywhere;
+}
+.deleteCandidateActions button:last-child {
+  background: #d32f2f;
+  color: #fff;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 24%);
+}
+.deleteCandidateActions button:last-child:hover {
+  background: #b71c1c;
+}
+.deleteCandidateActions button:last-child:disabled {
+  background: var(--disabled-background);
+  color: var(--disabled-foreground);
+  box-shadow: none;
+}
+@media (max-width: 600px) {
+  .deleteCandidateBody {
+    padding: 0 24px 60px;
+  }
+}
+
+/* Send Message: full-height right-side composition sheet. */
+.messageSheet[data-side="right"] {
+  width: min(660px, 100vw);
+  max-width: 660px;
+  height: 100dvh;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  background: var(--surface);
+  overflow: hidden;
+  transition-property: transform, opacity;
+  transition-duration: 250ms;
+}
+.messageSheet[data-side="right"][data-starting-style],
+.messageSheet[data-side="right"][data-ending-style] {
+  transform: translateX(100%);
+}
+.messageSheetHeader {
+  flex-shrink: 0;
+  padding: 40px 80px 48px 40px;
+}
+.messageSheetHeader [data-slot="sheet-title"] {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+  color: var(--heading);
+}
+.messageSheet > [data-slot="sheet-close"] {
+  top: 40px;
+  right: 40px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 2px;
+  color: var(--muted-foreground);
+}
+.messageSheet > [data-slot="sheet-close"] svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.5;
+}
+.messageSheetForm {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.messageSheetBody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 40px 32px;
+}
+.messageRecipients {
+  margin-bottom: 32px;
+}
+.messageRecipients > p {
+  margin: 0 0 8px;
+  font-size: 16px;
+  line-height: 24px;
+}
+.recipientChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.recipientChip {
+  min-height: 32px;
+  max-width: 100%;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 16px;
+  background: #eceff1;
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.recipientChips li {
+  max-width: 100%;
+}
+.messageField > label {
+  font-size: 16px;
+  line-height: 24px;
+}
+.messageField > label > span {
+  color: #f44336;
+}
+.messageField > p {
+  margin: 4px 0 8px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+}
+.messageField textarea {
+  height: 200px;
+  min-height: 200px;
+  field-sizing: fixed;
+  resize: vertical;
+  padding: 16px 12px;
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
+  font-size: 16px;
+  line-height: 24px;
+  box-shadow: none;
+}
+.messageField textarea::placeholder {
+  color: #bdbdbd;
+}
+.messageField textarea:focus-visible {
+  border-color: var(--primary);
+  outline: 1px solid var(--primary);
+}
+.messageSheetActions {
+  flex-shrink: 0;
+  margin-top: auto;
+  background: var(--surface);
+  padding-bottom: max(28px, env(safe-area-inset-bottom));
+}
+.messageFeedback {
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--muted-foreground);
+}
+@media (max-width: 600px) {
+  .messageSheetHeader {
+    padding: 28px 64px 36px 24px;
+  }
+  .messageSheet > [data-slot="sheet-close"] {
+    top: 28px;
+    right: 24px;
+  }
+  .messageSheetBody {
+    padding: 0 24px 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .messageSheet[data-side="right"] {
+    transition: none;
+  }
+}
+
+/* Candidate name opens the scrollable communication history sheet. */
+.historyBody {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 40px 32px;
+}
+.historyContact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 32px;
+  overflow-wrap: anywhere;
+}
+.historyContact p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 22px;
+}
+.historyContact .historyCandidateId {
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--muted-foreground);
+}
+.historyContact h2 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 29px;
+  font-weight: 700;
+  color: var(--heading);
+}
+.historyList {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.historyEntry {
+  padding: 24px 0;
+  border-top: 1px solid var(--border-strong);
+}
+.historyEntryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.historyTimestamp {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 20px;
+}
+.historyEntryHeader > [data-slot="badge"] {
+  flex-shrink: 0;
+}
+.historyMessage {
+  margin: 0;
+  font-size: 16px;
+  line-height: 22px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.historyEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
+  padding: 48px 0 32px;
+  max-width: 440px;
+  text-align: center;
+}
+.historyEmpty h3 {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+}
+.historyEmpty p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 18px;
+}
+.historySheet .historyBody {
+  scrollbar-gutter: stable;
+}
+@media (max-width: 600px) {
+  .historyBody {
+    padding: 0 24px 24px;
+  }
+}
+
+.historyEmptyIllustration {
+  display: block;
+  flex-shrink: 0;
+  margin-bottom: 16px;
+}
+
+/* An empty collection keeps its column headers, without filler rows or pagination. */
+.candidatesEmpty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(48px, 10vh, 96px) 16px 48px;
+  text-align: center;
+}
+.candidatesEmpty > img {
+  display: block;
+  flex-shrink: 0;
+  margin-bottom: 16px;
+}
+.candidatesEmpty h2 {
+  margin: 0 0 8px;
+  color: var(--foreground);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+}
+.candidatesEmpty p {
+  margin: 0;
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
