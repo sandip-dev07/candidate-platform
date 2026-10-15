@@ -1,0 +1,17 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+.agents
+
+# Virtual environments
+.venv
+
+# Env files (Neon DATABASE_URL lives in .env — never commit)
+.env
+.env.*
+!.env.example

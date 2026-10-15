@@ -1,0 +1,12 @@
+[project]
+name = "candidate-platform-backend"
+version = "0.1.0"
+description = "Candidate communication platform for recruiters (FastAPI + Neon Postgres)"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi[standard]>=0.143.1",
+    "psycopg[binary]>=3.3.6",
+    "pydantic>=2.14.1",
+    "sqlalchemy>=2.1.4",
+]
