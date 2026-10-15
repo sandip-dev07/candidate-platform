@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { useCallback, useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import type { Candidate } from "@/lib/candidates";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -18,10 +18,12 @@ import {
 import {
   ApiError,
   getCandidateHistory,
+  listTemplates,
   retryMessage,
   sendBulk,
   sendMessage,
   type ApiMessage,
+  type ApiTemplate,
 } from "@/lib/api";
 import {
   formatApiTimestamp,
@@ -43,6 +45,7 @@ interface Props {
   detail: Candidate | null;
   setDetail: Dispatch<SetStateAction<Candidate | null>>;
   onSent?: (candidateIds: string[]) => void | Promise<void>;
+  onManageTemplates?: () => void;
 }
 
 export function CandidateSheets({
@@ -56,12 +59,16 @@ export function CandidateSheets({
   detail,
   setDetail,
   onSent,
+  onManageTemplates,
 }: Props) {
   const [sending, setSending] = useState(false);
   const [history, setHistory] = useState<ApiMessage[]>([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyError, setHistoryError] = useState("");
   const [retryingId, setRetryingId] = useState<string | null>(null);
+  const [templates, setTemplates] = useState<ApiTemplate[]>([]);
+  const [templatesLoading, setTemplatesLoading] = useState(false);
+  const [templatesError, setTemplatesError] = useState("");
 
   // Load communication history from GET /candidates/{id}/messages when a candidate is opened.
   useEffect(() => {
@@ -97,6 +104,32 @@ export function CandidateSheets({
       cancelled = true;
     };
   }, [detail]);
+
+  // Load templates for the picker whenever the send sheet opens.
+  const fetchTemplates = useCallback(async () => {
+    setTemplatesLoading(true);
+    setTemplatesError("");
+    try {
+      setTemplates(await listTemplates());
+    } catch (e) {
+      setTemplatesError(e instanceof ApiError ? e.message : "Could not load templates.");
+    } finally {
+      setTemplatesLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (dialog === "message") void fetchTemplates();
+  }, [dialog, fetchTemplates]);
+
+  function applyTemplate(id: string) {
+    const tpl = templates.find((t) => t.id === id);
+    if (!tpl) return;
+    setDraft(tpl.body);
+    setMessageFeedback(
+      `Template "${tpl.name}" applied. {{name}} and {{phone}} are filled per candidate on send.`,
+    );
+  }
 
   async function handleSend(event: React.FormEvent) {
     event.preventDefault();
@@ -212,10 +245,73 @@ export function CandidateSheets({
                 </ul>
               </section>
               <div className={styles.messageField}>
+                <label htmlFor="candidate-template">Template</label>
+                <p id="candidate-template-help">
+                  Optional — start from a saved template, then edit freely.
+                </p>
+                {templatesLoading ? (
+                  <p role="status" className={styles.messageFeedback}>
+                    <Spinner /> Loading templates…
+                  </p>
+                ) : templatesError ? (
+                  <p role="alert" className={styles.error}>
+                    {templatesError}{" "}
+                    <button
+                      type="button"
+                      className={styles.name}
+                      onClick={() => void fetchTemplates()}
+                    >
+                      Retry
+                    </button>
+                  </p>
+                ) : (
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <select
+                      id="candidate-template"
+                      aria-describedby="candidate-template-help"
+                      value=""
+                      disabled={sending || templates.length === 0}
+                      onChange={(event) => {
+                        if (event.target.value) applyTemplate(event.target.value);
+                      }}
+                      style={{
+                        flex: 1,
+                        height: 40,
+                        padding: "0 12px",
+                        border: "1px solid #bdbdbd",
+                        borderRadius: 4,
+                        background: "var(--surface)",
+                        fontSize: 14,
+                      }}
+                    >
+                      <option value="">
+                        {templates.length === 0 ? "No templates yet" : "Use a template…"}
+                      </option>
+                      {templates.map((tpl) => (
+                        <option key={tpl.id} value={tpl.id}>
+                          {tpl.name}
+                        </option>
+                      ))}
+                    </select>
+                    {onManageTemplates && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        type="button"
+                        disabled={sending}
+                        onClick={onManageTemplates}
+                      >
+                        Manage
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className={styles.messageField}>
                 <label htmlFor="candidate-message">
                   Message <span aria-hidden="true">*</span>
                 </label>
-                <p id="candidate-message-help">Type, or paste the message you want to send.</p>
+                <p id="candidate-message-help">Type, or paste the message you want to send. {"{{name}}"} and {"{{phone}}"} are filled per candidate.</p>
                 <Textarea
                   id="candidate-message"
                   name="message"

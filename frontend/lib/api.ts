@@ -195,3 +195,21 @@ export function getProviderHealth() {
 export function listTemplates() {
   return request<ApiTemplate[]>(`/templates`);
 }
+
+export function createTemplate(input: { name: string; body: string }) {
+  return request<ApiTemplate>(`/templates`, {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+export function updateTemplate(id: string, input: { name?: string; body?: string }) {
+  return request<ApiTemplate>(`/templates/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(input),
+  });
+}
+
+export function deleteTemplate(id: string) {
+  return request<void>(`/templates/${id}`, { method: "DELETE" });
+}

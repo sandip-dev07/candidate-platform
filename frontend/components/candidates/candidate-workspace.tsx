@@ -38,6 +38,7 @@ import {
 } from "./candidate-table";
 import { CandidateDialogs } from "./candidate-dialogs";
 import { CandidateSheets } from "./candidate-sheets";
+import { TemplateDialog } from "./template-dialog";
 import styles from "@/styles/candidate-workspace.module.css";
 
 function toUiCandidate(c: {
@@ -77,6 +78,7 @@ export function CandidateWorkspace() {
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [health, setHealth] = useState<ApiProviderHealth | null>(null);
+  const [templatesOpen, setTemplatesOpen] = useState(false);
   const recipients = candidates.filter((candidate) =>
     selected.includes(candidate.id),
   );
@@ -366,6 +368,13 @@ export function CandidateWorkspace() {
             )}
           </Button>
           <Button
+            variant="outline"
+            className={styles.addButton}
+            onClick={() => setTemplatesOpen(true)}
+          >
+            Templates
+          </Button>
+          <Button
             className={styles.actionButton}
             disabled={!selected.length}
             onClick={() => openDialog("message")}
@@ -465,6 +474,19 @@ export function CandidateWorkspace() {
         detail={detail}
         setDetail={setDetail}
         onSent={refreshAfterSend}
+        onManageTemplates={() => setTemplatesOpen(true)}
+      />
+      <TemplateDialog
+        open={templatesOpen}
+        onOpenChange={setTemplatesOpen}
+        onApplied={(tpl) => {
+          setDraft(tpl.body);
+          setMessageFeedback(
+            `Template "${tpl.name}" applied. {{name}} and {{phone}} are filled per candidate on send.`,
+          );
+          setTemplatesOpen(false);
+          if (selected.length > 0) setDialog("message");
+        }}
       />
     </main>
   );
